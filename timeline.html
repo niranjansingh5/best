@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="gate.js"></script>
+<title>Our Story — Gargi & Adi</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.tl-wrap {
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.tl-wrap::before {
+  content: '';
+  position: absolute;
+  left: 0.55rem; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--rose) 10%, var(--rose-dark) 90%, transparent);
+  opacity: 0.5;
+}
+
+.tl-item {
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+.tl-dot-wrap {
+  position: absolute;
+  left: -2.5rem;
+  top: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.tl-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--rose);
+  border: 2px solid var(--deep);
+  box-shadow: 0 0 0 4px rgba(212,85,138,0.2);
+  flex-shrink: 0;
+}
+
+.tl-dot.gold {
+  background: var(--gold);
+  box-shadow: 0 0 0 4px rgba(212,168,90,0.2);
+}
+
+.tl-dot.muted {
+  background: var(--text-muted);
+  box-shadow: 0 0 0 4px rgba(154,106,122,0.15);
+}
+
+.tl-date {
+  font-size: 0.7rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.tl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem 1.8rem;
+  transition: border-color 0.3s;
+}
+
+.tl-card:hover { border-color: rgba(212,85,138,0.4); }
+
+.tl-icon { font-size: 1.8rem; margin-bottom: 0.6rem; display: block; }
+
+.tl-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 0.6rem;
+}
+
+.tl-body {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.tl-body em { color: var(--rose-light); font-style: normal; }
+
+.tl-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+  margin-top: 0.8rem;
+}
+
+.tag-rose { background: rgba(212,85,138,0.12); color: var(--rose-light); border: 1px solid rgba(212,85,138,0.25); }
+.tag-gold { background: rgba(212,168,90,0.12); color: var(--gold-light); border: 1px solid rgba(212,168,90,0.25); }
+.tag-muted { background: rgba(154,106,122,0.1); color: var(--text-muted); border: 1px solid rgba(154,106,122,0.2); }
+
+.present-banner {
+  background: linear-gradient(135deg, rgba(212,85,138,0.1) 0%, rgba(212,168,90,0.08) 100%);
+  border: 1px solid rgba(212,168,90,0.3);
+  border-radius: 18px;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.present-banner .big-emoji { font-size: 3rem; display: block; margin-bottom: 1rem; animation: pulse-glow 2s ease-in-out infinite; }
+
+.present-banner p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--gold-light);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+</style>
+</head>
+<body>
+<canvas id="petal-canvas"></canvas>
+
+<nav>
+  <a class="nav-logo" href="index.html">G ♡</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="birthday.html">Birthday 🎂</a></li>
+    <li><a href="timeline.html">Our Story</a></li>
+    <li><a href="memories.html">Memories</a></li>
+    <li><a href="forgot.html">Never Forgot</a></li>
+    <li><a href="letter.html">Letter 💌</a></li>
+    <li><a href="songs.html">Our Songs 🎵</a></li>
+    <li><a href="chance.html" class="locked">Another Chance</a></li>
+    <li><a href="finale.html">Finale 🎉</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <p class="eyebrow">hamari kahani</p>
+    <h1 class="page-title">Our <span>Story</span> 📅</h1>
+    <p class="page-subtitle">"Kuch safar chote hote hain, par unka asar hamesha ke liye hota hai."</p>
+    <div class="divider"><span>💫</span></div>
+  </div>
+
+  <div class="section">
+    <div class="tl-wrap">
+
+      <div class="tl-item reveal">
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <span class="tl-date">13 April 2024</span>
+        <div class="tl-card">
+          <span class="tl-icon">🌅</span>
+          <h3 class="tl-heading">Jab Sab Shuru Hua</h3>
+          <p class="tl-body">Yeh woh din tha. <em>April 13, 2024.</em> Ek naya chapter shuru hua — ek feeling jo pehle kabhi aise nahi aayi thi. Tu meri zindagi mein aayi, aur kuch toh badal gaya uss din. Permanently.</p>
+          <span class="tl-tag tag-rose">💕 The Beginning</span>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <span class="tl-date">April → May 2024</span>
+        <div class="tl-card">
+          <span class="tl-icon">🌸</span>
+          <h3 class="tl-heading">Nayi Subahein, Nayi Baatein</h3>
+          <p class="tl-body">Pehle kuch hafte — <em>teri baatein, teri hansi, teri existence.</em> Har din kuch naya discover karna tujh mein. Teri woh smile jo bina wajah de deti hai ek reason to smile back.</p>
+          <span class="tl-tag tag-rose">✨ Golden Days</span>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <span class="tl-date">May → June 2024</span>
+        <div class="tl-card">
+          <span class="tl-icon">💛</span>
+          <h3 class="tl-heading">Woh Khoobsurat Pal</h3>
+          <p class="tl-body">Kuch hi mahine the — but <em>har ek pal ne dil mein jagah bana li.</em> Teri gusse wali face, teri curly hair, teri baatein — sab kuch store ho gaya yahan, yahan dil mein. Permanently.</p>
+          <span class="tl-tag tag-rose">🌙 Those Moments</span>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot-wrap"><div class="tl-dot muted"></div></div>
+        <span class="tl-date">12 July 2024</span>
+        <div class="tl-card" style="border-color: rgba(154,106,122,0.3);">
+          <span class="tl-icon">🌧️</span>
+          <h3 class="tl-heading">Woh Din Jo Hum Chahte Nahi Tha</h3>
+          <p class="tl-body">Ek situation. Sirf ek situation. <em>Ghar pe pakde jaana — yeh humara reason nahi hona chahiye tha.</em> Pyaar kabhi khatam nahi hua. Bas ek forced stop aa gaya, jisko hum deserve nahi karte the.</p>
+          <span class="tl-tag tag-muted">💔 Unfair Ending</span>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot-wrap"><div class="tl-dot muted"></div></div>
+        <span class="tl-date">July 2024 → July 2026</span>
+        <div class="tl-card" style="border-color: rgba(154,106,122,0.2);">
+          <span class="tl-icon">⏳</span>
+          <h3 class="tl-heading">Do Saal Ki Khamoshi</h3>
+          <p class="tl-body">730 din. <em>Teri yaad kabhi nahi gayi.</em> Sahiba bajti thi — tu yaad aati thi. O Meri Laila sunता — tu yaad aati thi. Koi bhi song bajta tha — tu yaad aati thi. 2 saal bhi itna nahi badal paaye.</p>
+          <span class="tl-tag tag-muted">🕊️ Silent Years</span>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot-wrap"><div class="tl-dot gold"></div></div>
+        <span class="tl-date">Aaj — July 17, 2026</span>
+        <div class="tl-card" style="border-color: rgba(212,168,90,0.35);">
+          <span class="tl-icon">🌹</span>
+          <h3 class="tl-heading" style="color:var(--gold-light);">Teri Birthday — Mera Ek Mauka</h3>
+          <p class="tl-body">Aaj tera birthday hai. Aur maine decide kiya — <em>agar main kuch feel karta hoon, toh kehna chahiye.</em> Yeh page usi ki ek koshish hai. Sirf tujhe batane ke liye — ki main hoon, ki main yaad karta hoon, aur ki... pyaar abhi bhi wahi hai.</p>
+          <span class="tl-tag tag-gold">💛 Right Now</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="present-banner reveal">
+      <span class="big-emoji">🌸</span>
+      <p>"Yeh kahani abhi khatam nahi hui, Gargi. Agar tu chahe — toh iska agle chapter bhi hum likh sakte hain. Saath mein."</p>
+    </div>
+
+    <div style="text-align:center; margin-top:2.5rem;" class="reveal">
+      <a href="memories.html" class="btn btn-outline">Memories →</a>
+    </div>
+  </div>
+
+  <div class="page-nav-footer">
+    <p>Aage badhte hain — teri yaadein</p>
+    <a href="memories.html" class="btn btn-outline">Memory Gallery 🤍</a>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+</body>
+</html>

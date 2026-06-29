@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="gate.js"></script>
+<title>Happy Birthday Gargi 🎂</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.cake-wrap {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.cake-big {
+  font-size: 6rem;
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(212,85,138,0.4));
+}
+
+.bday-count {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin: 2.5rem 0;
+}
+
+.count-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.2rem 1.8rem;
+  text-align: center;
+  min-width: 100px;
+}
+
+.count-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  color: var(--rose);
+  display: block;
+  line-height: 1;
+}
+
+.count-label {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.wish-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.wish-card::before {
+  content: '';
+  position: absolute;
+  top: -30px; left: -30px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,85,138,0.15), transparent 70%);
+}
+
+.wish-card p {
+  font-family: 'Playfair Display', serif;
+  color: var(--text-light);
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  line-height: 1.95;
+  position: relative;
+}
+
+.wish-card p span.hi { color: var(--rose-light); font-style: italic; }
+
+.poem-box {
+  background: rgba(212,85,138,0.06);
+  border-left: 2px solid var(--rose);
+  border-radius: 0 14px 14px 0;
+  padding: 1.8rem 2rem;
+  margin: 2rem 0;
+}
+
+.poem-box p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--text-light);
+  line-height: 2.1;
+  font-size: 1rem;
+}
+
+.emoji-row {
+  text-align: center;
+  font-size: 2rem;
+  letter-spacing: 0.4rem;
+  margin: 1.5rem 0;
+  animation: float 4s ease-in-out infinite;
+}
+
+.balloon-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  font-size: 2.5rem;
+  margin: 2rem 0;
+}
+
+.balloon-row span { animation: float 3s ease-in-out infinite; }
+.balloon-row span:nth-child(2) { animation-delay: 0.3s; }
+.balloon-row span:nth-child(3) { animation-delay: 0.6s; }
+.balloon-row span:nth-child(4) { animation-delay: 0.9s; }
+.balloon-row span:nth-child(5) { animation-delay: 1.2s; }
+</style>
+</head>
+<body>
+<canvas id="petal-canvas"></canvas>
+<canvas id="fireworks-canvas" style="position:fixed;inset:0;z-index:999;display:none;pointer-events:none;"></canvas>
+
+<nav>
+  <a class="nav-logo" href="index.html">G ♡</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="birthday.html">Birthday 🎂</a></li>
+    <li><a href="timeline.html">Our Story</a></li>
+    <li><a href="memories.html">Memories</a></li>
+    <li><a href="forgot.html">Never Forgot</a></li>
+    <li><a href="letter.html">Letter 💌</a></li>
+    <li><a href="songs.html">Our Songs 🎵</a></li>
+    <li><a href="chance.html" class="locked">Another Chance</a></li>
+    <li><a href="finale.html">Finale 🎉</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <p class="eyebrow">17th July 🎉</p>
+    <h1 class="page-title">Happy Birthday<br><span>Gargi</span> 🎂</h1>
+    <p class="page-subtitle">"Aaj ka din sirf tera hai — aur main chahta tha ki tu ise feel kare."</p>
+    <div class="divider"><span>🌸</span></div>
+  </div>
+
+  <div class="section">
+    <div class="cake-wrap reveal">
+      <span class="cake-big">🎂</span>
+    </div>
+
+    <div class="balloon-row reveal">
+      <span>🎈</span><span>🌸</span><span>🎂</span><span>🌸</span><span>🎈</span>
+    </div>
+
+    <!-- Age fun fact -->
+    <div class="bday-count reveal">
+      <div class="count-box">
+        <span class="count-num" id="age-days">—</span>
+        <span class="count-label">Days of being awesome</span>
+      </div>
+      <div class="count-box">
+        <span class="count-num">🌸</span>
+        <span class="count-label">Petals on this page</span>
+      </div>
+      <div class="count-box">
+        <span class="count-num">∞</span>
+        <span class="count-label">Love from Adi</span>
+      </div>
+    </div>
+
+    <div class="wish-card reveal">
+      <p>
+        Gargi,<br><br>
+        <span class="hi">Aaj tera birthday hai.</span> Aur yeh sirf ek date nahi hai calendar pe — yeh woh din hai jab iss duniya mein kuch khaas hua. Jab <em>tu</em> aayi.<br><br>
+        Main sochta hoon — teri smile, teri aankhein, teri woh curly hair jo tujhe tujh jaisa banati hain — aur dil mein ek feeling aati hai jo words mein nahi aati.<br><br>
+        <span class="hi">So today, on your birthday — I just want you to know you are loved. Deeply. Genuinely. By someone who hasn't forgotten a single thing about you.</span><br><br>
+        Teri zindagi mein khushiyan aati rahe, teri muskaan kabhi na jaaye. Aur jo bhi tu chahti hai — woh sab mile tujhe. 💕
+      </p>
+    </div>
+
+    <div class="poem-box reveal">
+      <p>
+        Saat rang ki duniya hai teri,<br>
+        Teri hansi mein basanti bahaar. 🌸<br>
+        Teri aankhon mein roshni hai itni,<br>
+        Jhilmilate hain sitare baar baar. ✨<br><br>
+        Gusse mein bhi tu lagti cute hai,<br>
+        Curly baalon mein chhupa hai pyaar. 🌀<br>
+        Happy Birthday Gargi, aaj ke din —<br>
+        Adi ki taraf se — dil se, baar baar. 💕
+      </p>
+    </div>
+
+    <div class="emoji-row reveal">🎊 🌹 🎂 🌹 🎊</div>
+
+    <div style="text-align:center;" class="reveal">
+      <button class="btn btn-primary" onclick="launchFireworks('fireworks-canvas',4000)" style="margin-right:1rem;">
+        Blow the Candles 🕯️
+      </button>
+      <a href="timeline.html" class="btn btn-outline">Our Story →</a>
+    </div>
+  </div>
+
+  <div class="page-nav-footer">
+    <p>Next: hamari kahani shuru hoti hai</p>
+    <a href="timeline.html" class="btn btn-outline">Our Story 📅</a>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  // Calculate days old (rough — from a plausible birth year)
+  // We don't know her DOB year, so we show days since July 17
+  const today = new Date();
+  const bday  = new Date(today.getFullYear(), 6, 17); // July 17
+  if (bday > today) bday.setFullYear(today.getFullYear() - 1);
+  const diff = Math.floor((today - bday) / 86400000);
+  document.getElementById('age-days').textContent = (diff + 365 * 20).toLocaleString();
+</script>
+</body>
+</html>

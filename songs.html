@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="gate.js"></script>
+<title>Our Songs 🎵 — Gargi & Adi</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.songs-intro {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.vinyl {
+  font-size: 4rem;
+  display: inline-block;
+  animation: spin-slow 8s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.songs-intro p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Song cards */
+.song-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1.5rem 1.8rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  transition: transform 0.25s, border-color 0.25s, background 0.25s;
+  cursor: pointer;
+}
+
+.song-card:hover {
+  transform: translateX(6px);
+  border-color: rgba(212,85,138,0.4);
+  background: rgba(212,85,138,0.05);
+}
+
+.song-card.now-playing {
+  border-color: rgba(212,85,138,0.55);
+  background: rgba(212,85,138,0.08);
+}
+
+.song-play-btn {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(212,85,138,0.35);
+  background: rgba(212,85,138,0.08);
+  color: var(--rose-light);
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, border-color 0.2s;
+  margin-top: 0.05rem;
+}
+
+.song-play-btn:hover {
+  background: var(--rose);
+  color: #fff;
+  border-color: var(--rose);
+  transform: scale(1.08);
+}
+
+.song-card.now-playing .song-play-btn {
+  background: var(--rose);
+  color: #fff;
+  border-color: var(--rose);
+  animation: music-pulse 1.6s ease-in-out infinite;
+}
+
+.song-playing-tag {
+  display: none;
+  font-size: 0.68rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--rose-light);
+  margin-top: 0.6rem;
+}
+
+.song-card.now-playing .song-playing-tag { display: block; }
+
+.song-num {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--rose);
+  font-size: 1.5rem;
+  min-width: 2rem;
+  line-height: 1;
+  padding-top: 0.1rem;
+}
+
+.song-icon { font-size: 2rem; flex-shrink: 0; }
+
+.song-info { flex: 1; }
+
+.song-title {
+  font-family: 'Playfair Display', serif;
+  color: #fff;
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
+}
+
+.song-artist {
+  font-size: 0.78rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.song-feeling {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--rose-light);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.song-bar {
+  width: 100%;
+  height: 3px;
+  background: rgba(212,85,138,0.1);
+  border-radius: 2px;
+  margin-top: 0.8rem;
+  overflow: hidden;
+}
+
+.song-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--rose), var(--gold));
+  border-radius: 2px;
+  animation: bar-load 1.5s ease forwards;
+}
+
+@keyframes bar-load {
+  from { width: 0; }
+}
+
+/* Note at bottom */
+.music-note-box {
+  background: rgba(212,168,90,0.06);
+  border: 1px solid rgba(212,168,90,0.2);
+  border-radius: 18px;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+.music-note-box .bignote { font-size: 3rem; margin-bottom: 0.8rem; display: block; animation: float 3s ease-in-out infinite; }
+
+.music-note-box p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--gold-light);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Waveform decoration */
+.wave-deco {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 1.5rem 0;
+}
+
+.wave-bar {
+  width: 4px;
+  border-radius: 2px;
+  background: var(--rose);
+  opacity: 0.5;
+  animation: wave-anim 1s ease-in-out infinite;
+}
+
+@keyframes wave-anim {
+  0%, 100% { height: 8px; }
+  50%       { height: 28px; }
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0s;    height: 12px; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s;  height: 20px; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s;  height: 28px; }
+.wave-bar:nth-child(4) { animation-delay: 0.15s; height: 24px; }
+.wave-bar:nth-child(5) { animation-delay: 0.05s; height: 16px; }
+.wave-bar:nth-child(6) { animation-delay: 0.25s; height: 22px; }
+.wave-bar:nth-child(7) { animation-delay: 0.1s;  height: 14px; }
+</style>
+</head>
+<body>
+<canvas id="petal-canvas"></canvas>
+
+<nav>
+  <a class="nav-logo" href="index.html">G ♡</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="birthday.html">Birthday 🎂</a></li>
+    <li><a href="timeline.html">Our Story</a></li>
+    <li><a href="memories.html">Memories</a></li>
+    <li><a href="forgot.html">Never Forgot</a></li>
+    <li><a href="letter.html">Letter 💌</a></li>
+    <li><a href="songs.html">Our Songs 🎵</a></li>
+    <li><a href="chance.html" class="locked">Another Chance</a></li>
+    <li><a href="finale.html">Finale 🎉</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <p class="eyebrow">hamara playlist</p>
+    <h1 class="page-title">Our <span>Songs</span> 🎵</h1>
+    <p class="page-subtitle">"Yeh songs sirf songs nahi hain — yeh teri yaad ke triggers hain."</p>
+    <div class="divider"><span>🎶</span></div>
+  </div>
+
+  <div class="section">
+    <div class="songs-intro reveal">
+      <span class="vinyl">💿</span>
+      <p>"Jab bhi yeh songs bajte hain —<br>aankhein band ho jaati hain, aur tu dikhne lagti hai."</p>
+    </div>
+
+    <div class="wave-deco reveal">
+      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+    </div>
+
+    <div class="song-card reveal" data-track="0">
+      <button class="song-play-btn" aria-label="Play Sahiba">▶</button>
+      <span class="song-icon">🎵</span>
+      <div class="song-info">
+        <p class="song-title">Sahiba</p>
+        <p class="song-artist">Aditya Rikhari</p>
+        <p class="song-feeling">"Yeh gaana sun ke lagta hai — koi meri baat kar raha hai. 'Sahiba' mere liye 'Gargi' ho gayi hai. Main yeh sun ke tujhe feel karta hoon."</p>
+        <div class="song-bar"><div class="song-bar-fill" style="width:92%"></div></div>
+        <p class="song-playing-tag">♪ Now Playing</p>
+      </div>
+    </div>
+
+    <div class="song-card reveal" data-track="1">
+      <button class="song-play-btn" aria-label="Play O Meri Laila">▶</button>
+      <span class="song-icon">🌙</span>
+      <div class="song-info">
+        <p class="song-title">O Meri Laila</p>
+        <p class="song-artist">Atif Aslam</p>
+        <p class="song-feeling">"'Laila' koi naam nahi hota — ek feeling hoti hai. Teri tarah. Jab bhi yeh bajta hai — main samajh jaata hoon 'laila' ka matlab."</p>
+        <div class="song-bar"><div class="song-bar-fill" style="width:85%; animation-delay:0.2s"></div></div>
+        <p class="song-playing-tag">♪ Now Playing</p>
+      </div>
+    </div>
+
+    <div class="song-card reveal" data-track="2">
+      <button class="song-play-btn" aria-label="Play One Love">▶</button>
+      <span class="song-icon">💛</span>
+      <div class="song-info">
+        <p class="song-title">One Love</p>
+        <p class="song-artist">— ek hi thi</p>
+        <p class="song-feeling">"Sirf ek. That's you. Yeh gaana remind karta hai ki kuch cheezein once-in-a-lifetime hoti hain. Tu woh thi."</p>
+        <div class="song-bar"><div class="song-bar-fill" style="width:78%; animation-delay:0.4s"></div></div>
+        <p class="song-playing-tag">♪ Now Playing</p>
+      </div>
+    </div>
+
+    <div class="song-card reveal" data-track="3">
+      <button class="song-play-btn" aria-label="Play Pal Pal">▶</button>
+      <span class="song-icon">⏳</span>
+      <div class="song-info">
+        <p class="song-title">Pal Pal</p>
+        <p class="song-artist">— har pal mein</p>
+        <p class="song-feeling">"'Pal pal dil ke paas tum rehte ho' — yeh meri zindagi thi jab hum saath the. Aur honestly? Abhi bhi thoda wahi hai."</p>
+        <div class="song-bar"><div class="song-bar-fill" style="width:88%; animation-delay:0.3s"></div></div>
+        <p class="song-playing-tag">♪ Now Playing</p>
+      </div>
+    </div>
+
+    <div class="song-card reveal" data-track="4">
+      <button class="song-play-btn" aria-label="Play Maine Yeh Tune Kya Kiya">▶</button>
+      <span class="song-icon">💔</span>
+      <div class="song-info">
+        <p class="song-title">Maine Yeh Tune Kya Kiya</p>
+        <p class="song-artist">Javed Bashir</p>
+        <p class="song-feeling">"Yeh gaana sun ke ek baar rona aaya tha. Sach mein. Iska ek ek lafz feel hua. Tune sach mein kuch kar diya tha — dil mein ghus gayi thi tu."</p>
+        <div class="song-bar"><div class="song-bar-fill" style="width:96%; animation-delay:0.5s"></div></div>
+        <p class="song-playing-tag">♪ Now Playing</p>
+      </div>
+    </div>
+
+    <div class="music-note-box reveal">
+      <span class="bignote">🎵</span>
+      <p>
+        "Yeh songs meri official 'Gargi Playlist' hain —<br>
+        jo main tab sunaata hoon jab miss karta hoon.<br>
+        Which is... bahut baar hota hai. 🙈"
+      </p>
+    </div>
+
+    <div style="text-align:center; margin-top:2rem;" class="reveal">
+      <a href="chance.html" class="btn btn-gold">Another Chance 🔒 →</a>
+    </div>
+  </div>
+
+  <div class="page-nav-footer">
+    <p>Ek secret page baki hai...</p>
+    <a href="chance.html" class="btn btn-gold">Another Chance 🔒</a>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  (function () {
+    const cards = document.querySelectorAll('.song-card');
+
+    function syncUI(detail) {
+      cards.forEach(card => {
+        const idx = Number(card.dataset.track);
+        const btn = card.querySelector('.song-play-btn');
+        const isThis = idx === detail.track;
+        const isPlaying = isThis && detail.playing;
+        card.classList.toggle('now-playing', isPlaying);
+        btn.textContent = isPlaying ? '❚❚' : '▶';
+      });
+    }
+
+    cards.forEach(card => {
+      const idx = Number(card.dataset.track);
+      const btn = card.querySelector('.song-play-btn');
+
+      function handleClick(e) {
+        e.stopPropagation();
+        if (!window.gargiMusic) return;
+        const current = window.gargiMusic.getState();
+        if (current.track === idx && current.playing) {
+          window.gargiMusic.pause();
+        } else {
+          window.gargiMusic.playTrack(idx);
+        }
+      }
+
+      card.addEventListener('click', handleClick);
+      btn.addEventListener('click', handleClick);
+    });
+
+    document.addEventListener('gargi-music-state', (e) => syncUI(e.detail));
+
+    // Reflect whatever state the player is already in when this page loads
+    if (window.gargiMusic) {
+      syncUI(window.gargiMusic.getState());
+    }
+  })();
+</script>
+</body>
+</html>

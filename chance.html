@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="gate.js"></script>
+<title>🔒 Secret — Gargi</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── LOCK SCREEN ── */
+#lock-screen {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: radial-gradient(ellipse at 50% 60%, #1f0920 0%, #0d0610 70%);
+  position: relative;
+  z-index: 1;
+}
+
+.lock-icon {
+  font-size: 4rem;
+  animation: float 3s ease-in-out infinite;
+  display: block;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 20px rgba(212,168,90,0.4));
+}
+
+.lock-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.lock-title span { color: var(--gold); }
+
+.lock-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  max-width: 380px;
+  line-height: 1.7;
+}
+
+/* Code input */
+.code-wrap {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(212,168,90,0.25);
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  max-width: 380px;
+  width: 100%;
+}
+
+.code-label {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.code-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.code-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212,168,90,0.4);
+  background: transparent;
+  transition: all 0.3s;
+}
+
+.code-dot.filled {
+  background: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 10px rgba(212,168,90,0.4);
+}
+
+/* Numpad */
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  max-width: 260px;
+  margin: 0 auto 1.2rem;
+}
+
+.num-btn {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.num-btn:hover { background: rgba(212,168,90,0.12); border-color: rgba(212,168,90,0.4); transform: scale(1.05); }
+.num-btn:active { transform: scale(0.95); }
+
+.num-btn.del { font-size: 1.3rem; color: var(--text-muted); }
+.num-btn.del:hover { color: var(--rose-light); }
+
+.num-btn.zero { grid-column: 2; }
+
+/* Hint */
+.code-hint {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 0.8rem;
+  line-height: 1.6;
+  transition: color 0.3s;
+}
+
+/* Error state */
+.code-wrap.error { animation: shake 0.4s ease; border-color: rgba(212,85,138,0.5); }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+.error-msg {
+  color: var(--rose);
+  font-size: 0.8rem;
+  margin-top: 0.6rem;
+  min-height: 1.2rem;
+  font-style: italic;
+}
+
+/* ── CONTENT (hidden until unlocked) ── */
+#secret-content {
+  display: none;
+  position: relative;
+  z-index: 1;
+}
+
+/* Heart burst on unlock */
+#heart-burst {
+  position: fixed; inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  pointer-events: none;
+  font-size: 4rem;
+}
+
+.burst-heart {
+  position: absolute;
+  animation: burst-out 0.9s ease forwards;
+  opacity: 1;
+}
+
+@keyframes burst-out {
+  0%   { transform: translate(0,0) scale(0.5); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
+}
+
+/* ── PROPOSAL CONTENT ── */
+.proposal-hero {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: radial-gradient(ellipse at 50% 60%, #2a0a1c 0%, #0d0610 70%);
+}
+
+.unlocked-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(212,168,90,0.3);
+  padding: 0.3rem 0.9rem;
+  border-radius: 20px;
+  margin-bottom: 1.2rem;
+  background: rgba(212,168,90,0.07);
+}
+
+/* Confession letter */
+.confession-letter {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.conf-card {
+  background: rgba(212,85,138,0.05);
+  border: 1px solid rgba(212,85,138,0.2);
+  border-radius: 22px;
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.conf-card p {
+  font-family: 'Playfair Display', serif;
+  color: var(--text-light);
+  font-size: 1.02rem;
+  line-height: 2;
+  margin-bottom: 1.1rem;
+}
+
+.conf-card p .hi { color: var(--rose-light); font-style: italic; }
+.conf-card p .em { color: #fff; }
+
+/* Big question */
+.big-question {
+  text-align: center;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, rgba(212,85,138,0.12), rgba(212,168,90,0.06));
+  border: 1px solid rgba(212,85,138,0.3);
+  border-radius: 22px;
+  margin-bottom: 2rem;
+}
+
+.big-question .q-emoji { font-size: 3rem; display: block; margin-bottom: 1rem; animation: pulse-glow 2s ease-in-out infinite; }
+
+.big-question h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+  color: #fff;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+.big-question p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Answer buttons */
+.answer-wrap {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.btn-yes-big {
+  padding: 1.1rem 3rem;
+  background: var(--rose);
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.btn-yes-big:hover { background: var(--rose-dark); transform: scale(1.06); }
+
+.btn-maybe-big {
+  padding: 1.1rem 2rem;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 40px;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.btn-maybe-big:hover { border-color: var(--rose); color: var(--rose-light); }
+
+#answer-reveal {
+  display: none;
+  text-align: center;
+  margin-top: 2rem;
+  padding: 2rem;
+  background: rgba(212,85,138,0.08);
+  border: 1px solid rgba(212,85,138,0.25);
+  border-radius: 18px;
+}
+
+#answer-reveal .a-emoji { font-size: 3rem; display: block; margin-bottom: 0.8rem; animation: float 2s ease-in-out infinite; }
+
+#answer-reveal p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--rose-light);
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+</style>
+</head>
+<body>
+<canvas id="petal-canvas"></canvas>
+<canvas id="fireworks-canvas" style="position:fixed;inset:0;z-index:998;display:none;pointer-events:none;"></canvas>
+<div id="heart-burst"></div>
+
+<nav>
+  <a class="nav-logo" href="index.html">G ♡</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="birthday.html">Birthday 🎂</a></li>
+    <li><a href="timeline.html">Our Story</a></li>
+    <li><a href="memories.html">Memories</a></li>
+    <li><a href="forgot.html">Never Forgot</a></li>
+    <li><a href="letter.html">Letter 💌</a></li>
+    <li><a href="songs.html">Our Songs 🎵</a></li>
+    <li><a href="chance.html" class="locked active">Another Chance</a></li>
+    <li><a href="finale.html">Finale 🎉</a></li>
+  </ul>
+</nav>
+
+<!-- ── LOCK SCREEN ── -->
+<div class="page-wrap">
+<div id="lock-screen">
+  <span class="lock-icon">🔒</span>
+  <h1 class="lock-title">Secret <span>Page</span></h1>
+  <p class="lock-subtitle">"Yeh page sirf uss insaan ke liye hai jisne yahan tak ka safar kiya — aur jiske paas secret code hai. 🌸"</p>
+
+  <div class="code-wrap" id="code-wrap">
+    <span class="code-label">Enter the secret code</span>
+
+    <div class="code-dots">
+      <div class="code-dot" id="d0"></div>
+      <div class="code-dot" id="d1"></div>
+      <div class="code-dot" id="d2"></div>
+      <div class="code-dot" id="d3"></div>
+    </div>
+
+    <div class="numpad">
+      <button class="num-btn" onclick="press(1)">1</button>
+      <button class="num-btn" onclick="press(2)">2</button>
+      <button class="num-btn" onclick="press(3)">3</button>
+      <button class="num-btn" onclick="press(4)">4</button>
+      <button class="num-btn" onclick="press(5)">5</button>
+      <button class="num-btn" onclick="press(6)">6</button>
+      <button class="num-btn" onclick="press(7)">7</button>
+      <button class="num-btn" onclick="press(8)">8</button>
+      <button class="num-btn" onclick="press(9)">9</button>
+      <button class="num-btn zero" onclick="press(0)">0</button>
+      <button class="num-btn del" onclick="del()">⌫</button>
+    </div>
+
+    <p class="code-hint" id="code-hint">
+      💡 Hint: <em>"Woh date jo sab shuru hua — sirf din aur mahina"</em><br>
+      <span style="font-size:0.72rem; opacity:0.6;">(DDMM format — like 1304 for 13 April)</span>
+    </p>
+    <p class="error-msg" id="error-msg"></p>
+  </div>
+</div>
+
+<!-- ── SECRET CONTENT (unlocked) ── -->
+<div id="secret-content">
+  <div class="proposal-hero">
+    <span class="unlocked-badge">🔓 Unlocked — Sirf Tere Liye</span>
+    <p class="eyebrow">agar zindagi ek aur mauka de...</p>
+    <h1 class="page-title">Another <span>Chance</span> 🌹</h1>
+    <p class="page-subtitle">"Yeh page likhna sabse mushkil tha — aur sabse zaroori bhi."</p>
+    <div class="divider"><span>🌸</span></div>
+  </div>
+
+  <div class="section">
+    <div class="confession-letter">
+
+      <div class="conf-card reveal">
+        <p>
+          Gargi — <span class="hi">tu yahan tak aayi.</span> Matlab tune poora page dekha. Matlab kuch toh feel kiya tujhe. Aur iss page ka code — <span class="em">woh date thi jab humne shuru kiya tha.</span> 13th April. Sirf tum aur main jaante hain yeh date.
+        </p>
+        <p>
+          <span class="hi">2 saal bahut lambe hote hain.</span> Logon ne kaha — "bhool ja." Songs ne kaha — "mat bhool." Main songs ki taraf gaya. Kyunki dil ko alfaaz se nahi, music se samjhaate hain.
+        </p>
+        <p>
+          Tu aaj bhi wahi hai jo thi uss din — <span class="em">meri favourite person, meri Gargi.</span> Teri smile, teri curly hair, teri attitude, teri baatein — yeh sab list nahi hai. Yeh woh cheezein hain jo dil ne apne aap store kar li bina pooche.
+        </p>
+      </div>
+
+      <div class="conf-card reveal">
+        <p>
+          <span class="hi">July 12, 2024 — woh ending fair nahi thi.</span> Humara pyaar khatam nahi hua tha — ek situation ne force kiya tha. Aur main sochta hoon — agar woh din na hota, toh aaj hum kahaan hote?
+        </p>
+        <p>
+          Shayad yeh page banana nahi padta. Shayad main seedha tujhse bolne ka mauka dhundta. Par <span class="em">yeh page bhi ek mauka hai — mera tera ke liye.</span> Seedha, bina ghuma ke.
+        </p>
+        <p>
+          <span class="hi">Tera Adi abhi bhi wahi hai.</span> Wahi feelings, wahi pyaar, wahi banda jo teri ek baat sun ke sab chhod ke aata tha. Nahi badla. Shayad badal nahi sakta.
+        </p>
+      </div>
+
+      <div class="big-question reveal">
+        <span class="q-emoji">🌹</span>
+        <h2>"Kya tu wapas aaegi — <em>meri Gargi banke?</em>"</h2>
+        <p>"No pressure. No expectations. Sirf ek honest sawaal — ek honest dil se."</p>
+
+        <div class="answer-wrap">
+          <button class="btn-yes-big" onclick="sayYes()">Haan, Adi 💕</button>
+          <button class="btn-maybe-big" onclick="sayMaybe()">Sochti hoon… 🤍</button>
+        </div>
+
+        <div id="answer-reveal">
+          <span class="a-emoji" id="a-emoji">💕</span>
+          <p id="a-text"></p>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:2.5rem;" class="reveal">
+        <a href="finale.html" class="btn btn-primary">Final Message 🎉 →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav-footer">
+    <p>Ek aakhri message baki hai...</p>
+    <a href="finale.html" class="btn btn-primary">Finale 🎉</a>
+  </div>
+</div>
+</div>
+
+
+<script src="shared.js"></script>
+<script>
+  // Secret code = 1304 (13th April = start of their relationship)
+  const SECRET = '1304';
+  let entered = '';
+
+  function updateDots() {
+    for (let i = 0; i < 4; i++) {
+      document.getElementById('d' + i).classList.toggle('filled', i < entered.length);
+    }
+  }
+
+  function press(n) {
+    if (entered.length >= 4) return;
+    entered += n;
+    updateDots();
+    if (entered.length === 4) {
+      setTimeout(checkCode, 200);
+    }
+  }
+
+  function del() {
+    entered = entered.slice(0, -1);
+    updateDots();
+    document.getElementById('error-msg').textContent = '';
+    document.getElementById('code-wrap').classList.remove('error');
+  }
+
+  function checkCode() {
+    if (entered === SECRET) {
+      unlock();
+    } else {
+      document.getElementById('code-wrap').classList.add('error');
+      document.getElementById('error-msg').textContent = '✗ Galat code — try karo phir se 🙈';
+      setTimeout(() => {
+        entered = '';
+        updateDots();
+        document.getElementById('code-wrap').classList.remove('error');
+        document.getElementById('error-msg').textContent = '';
+      }, 1200);
+    }
+  }
+
+  function unlock() {
+    // Heart burst
+    const burst = document.getElementById('heart-burst');
+    burst.style.display = 'flex';
+    const emojis = ['💕','🌸','💛','🌹','✨','💖','🎊'];
+    for (let i = 0; i < 18; i++) {
+      const el = document.createElement('span');
+      el.className = 'burst-heart';
+      el.textContent = emojis[i % emojis.length];
+      const angle = (Math.PI * 2 / 18) * i;
+      const dist  = 120 + Math.random() * 80;
+      el.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+      el.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+      el.style.animationDelay = (Math.random() * 0.3) + 's';
+      burst.appendChild(el);
+    }
+    setTimeout(() => { burst.style.display = 'none'; burst.innerHTML = ''; }, 1200);
+
+    // Fade out lock, show content
+    const ls = document.getElementById('lock-screen');
+    ls.style.transition = 'opacity 0.7s';
+    ls.style.opacity = '0';
+    setTimeout(() => {
+      ls.style.display = 'none';
+      document.getElementById('secret-content').style.display = 'block';
+      launchFireworks('fireworks-canvas', 3500);
+      // Re-trigger reveal for new content
+      const items = document.querySelectorAll('#secret-content .reveal');
+      const io2 = new IntersectionObserver(e => {
+        e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vis'); io2.unobserve(x.target); } });
+      }, { threshold: 0.12 });
+      items.forEach(el => io2.observe(el));
+    }, 750);
+  }
+
+  function sayYes() {
+    document.getElementById('answer-reveal').style.display = 'block';
+    document.getElementById('a-emoji').textContent = '🎊';
+    document.getElementById('a-text').textContent = 'Maine jaanta tha... dil ne pehle hi bata diya tha. Teri Adi ka wait khatam hua. Main yahan hoon — abhi aur hamesha. 💕';
+    launchFireworks('fireworks-canvas', 5000);
+  }
+
+  function sayMaybe() {
+    document.getElementById('answer-reveal').style.display = 'block';
+    document.getElementById('a-emoji').textContent = '🤍';
+    document.getElementById('a-text').textContent = 'Theek hai Gargi — main wait karunga. Jitna time chahiye, le le. Mera dil kahi nahi ja raha. Kabhi bhi aana — main yahin hoon. 😊';
+  }
+</script>
+</body>
+</html>

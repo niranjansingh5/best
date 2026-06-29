@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="gate.js"></script>
+<title>Letter to Gargi 💌</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.letter-envelope {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* Paper card */
+.letter-paper {
+  background: rgba(255,248,252,0.04);
+  border: 1px solid rgba(212,85,138,0.25);
+  border-radius: 22px;
+  padding: 3rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.letter-paper::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 80px; height: 80px;
+  border-left: 1px solid rgba(212,85,138,0.15);
+  border-bottom: 1px solid rgba(212,85,138,0.15);
+  border-radius: 0 0 0 80px;
+  background: rgba(212,85,138,0.04);
+}
+
+.letter-stamp {
+  position: absolute;
+  top: 1.2rem; right: 1.2rem;
+  font-size: 1.4rem;
+  opacity: 0.6;
+}
+
+.letter-date {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.letter-greeting {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.7rem;
+  color: var(--rose);
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.letter-para {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--text-light);
+  line-height: 2;
+  margin-bottom: 1.3rem;
+}
+
+.letter-para .hindi {
+  color: var(--rose-light);
+  font-style: italic;
+}
+
+.letter-para .em {
+  color: #fff;
+  font-weight: 600;
+}
+
+.letter-divider {
+  width: 60px; height: 1px;
+  background: var(--rose);
+  opacity: 0.3;
+  margin: 1.5rem 0;
+}
+
+.letter-sign-block {
+  margin-top: 2rem;
+}
+
+.letter-sign-block p {
+  font-family: 'Playfair Display', serif;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.letter-sign {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2rem;
+  color: var(--gold);
+  display: block;
+}
+
+/* Read receipt */
+.read-receipt {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.read-receipt::before {
+  content: '💌';
+  font-size: 1rem;
+}
+
+/* Postscript box */
+.ps-box {
+  background: rgba(212,168,90,0.07);
+  border: 1px solid rgba(212,168,90,0.2);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.ps-box p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--gold-light);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+.ps-box p strong { color: var(--gold); font-style: normal; }
+
+/* Seal animation */
+.wax-seal {
+  width: 80px; height: 80px;
+  background: radial-gradient(circle at 40% 35%, rgba(212,85,138,0.6), rgba(139,31,78,0.9));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  margin: 2rem auto 0;
+  border: 2px solid rgba(212,85,138,0.4);
+  animation: pulse-glow 2s ease-in-out infinite;
+  cursor: default;
+}
+</style>
+</head>
+<body>
+<canvas id="petal-canvas"></canvas>
+
+<nav>
+  <a class="nav-logo" href="index.html">G ♡</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="birthday.html">Birthday 🎂</a></li>
+    <li><a href="timeline.html">Our Story</a></li>
+    <li><a href="memories.html">Memories</a></li>
+    <li><a href="forgot.html">Never Forgot</a></li>
+    <li><a href="letter.html">Letter 💌</a></li>
+    <li><a href="songs.html">Our Songs 🎵</a></li>
+    <li><a href="chance.html" class="locked">Another Chance</a></li>
+    <li><a href="finale.html">Finale 🎉</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <p class="eyebrow">dil ki baat</p>
+    <h1 class="page-title">Letter to <span>Gargi</span> 💌</h1>
+    <p class="page-subtitle">"Jo main kehna chahta tha — 2 saal se — yeh raha."</p>
+    <div class="divider"><span>✉️</span></div>
+  </div>
+
+  <div class="section">
+    <div class="letter-envelope">
+      <div class="letter-paper reveal">
+        <span class="letter-stamp">🌸</span>
+        <span class="letter-date">17th July, 2026 — Teri Birthday 🎂</span>
+        <span class="letter-greeting">Gargi,</span>
+
+        <p class="letter-para">
+          Pehle yeh bata doon — <span class="hindi">yeh letter likhna aasaan nahi tha.</span> Kai baar socha, kai baar ruka. Par aaj tera birthday hai — aur main chahta hoon ki tu jaane kuch aisi baatein jo main 2 saal se roka hua tha.
+        </p>
+
+        <div class="letter-divider"></div>
+
+        <p class="letter-para">
+          <span class="hindi">13 April 2024 se lekar 12 July 2024 tak</span> — sirf 3 mahine. Log poochte hain — "itne kam time mein kya pyaar hoga?" <span class="em">Haan. Hota hai.</span> Mujhe hua tha. Teri ek smile dekh ke — ek alag hi duniya thi.
+        </p>
+
+        <p class="letter-para">
+          July 12 pe jo hua — <span class="hindi">woh ek unfair ending thi.</span> Humne kuch bura nahi kiya tha. Tu pakdi gayi ghar mein — yeh ek situation thi, reason nahi. Aur uss reason se jo humne khoya — woh kisi bhi situation se bada tha.
+        </p>
+
+        <div class="letter-divider"></div>
+
+        <p class="letter-para">
+          <span class="hindi">2 saal mein maine bahut kuch try kiya.</span> Bhoolne ki koshish ki. Nahi hua. "Sahiba" bajti thi — tu yaad aati thi. "O Meri Laila" — tu yaad aati thi. Koi bhi cheez — teri yaad le aati thi. <span class="em">Kuch cheezein hoti hain jo bhoolne ke liye nahi hoti.</span>
+        </p>
+
+        <p class="letter-para">
+          Gargi, aaj tera birthday hai. Aur main chahta tha ki tu jaane — <span class="hindi">tu aaj bhi meri favourite person hai.</span> Teri curly hair, teri attitude, teri woh smile — sab kuch aaj bhi exactly wahi hai mere dil mein.
+        </p>
+
+        <div class="letter-divider"></div>
+
+        <p class="letter-para">
+          <span class="hindi">Main yeh force nahi kar raha.</span> No pressure. Tu jaana chahti hai toh jaa — main samjhunga. Par agar tere dil mein bhi kuch hai jo abhi bhi ruka hua hai — <span class="em">toh woh page bhi hai is website pe. Sirf tere liye. Ek secret ke saath.</span>
+        </p>
+
+        <p class="letter-para">
+          <span class="hindi">Bahut zyada likh diya.</span> Par dil bahut bhar ke tha — sorry nahi hoon isliye. 😊
+        </p>
+
+        <div class="letter-sign-block">
+          <p>Hamesha tera,</p>
+          <span class="letter-sign">Adi 💕</span>
+        </div>
+
+        <div class="read-receipt">
+          Sent with love — 17th July 2026
+        </div>
+      </div>
+
+      <div class="ps-box reveal">
+        <p><strong>P.S.</strong> — <span class="hindi">"Ek secret page hai — 'Another Chance' wala. Uska ek code hai. Agar tu jaanna chahti hai woh code — toh mujhe bata de ki tu yahan tak aayi."</span> 🔒✨</p>
+      </div>
+
+      <div class="wax-seal reveal" title="With love, sealed">💕</div>
+
+      <div style="text-align:center; margin-top:2rem;" class="reveal">
+        <a href="songs.html" class="btn btn-outline">Our Songs →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav-footer">
+    <p>Jo songs yaad dilate hain...</p>
+    <a href="songs.html" class="btn btn-outline">Our Songs 🎵</a>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+</body>
+</html>

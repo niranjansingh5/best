@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="gate.js"></script>
+<title>Happy Birthday Once Again 🎉 — Gargi</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── BIG FINALE HERO ── */
+#finale-hero {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: radial-gradient(ellipse at 50% 50%, #2a0a1c 0%, #0d0610 65%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Starfield */
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50%       { opacity: 0.7; transform: scale(1.3); }
+}
+
+.finale-emoji-row {
+  font-size: 2.5rem;
+  letter-spacing: 0.5rem;
+  margin-bottom: 1.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.finale-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.finale-h1 .r { color: var(--rose); }
+.finale-h1 .g { color: var(--gold); }
+
+.finale-tagline {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  color: var(--rose-light);
+  margin: 1rem 0 2.5rem;
+}
+
+/* Floating hearts */
+.float-hearts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.fh {
+  position: absolute;
+  font-size: 1.5rem;
+  animation: float-up 6s ease-in-out infinite;
+  opacity: 0.4;
+}
+
+@keyframes float-up {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+  50%  { transform: translateY(-40px) rotate(10deg); opacity: 0.7; }
+  100% { transform: translateY(0) rotate(-5deg); opacity: 0.4; }
+}
+
+/* ── TRIBUTE CARDS ── */
+.tribute-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.tribute-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: transform 0.3s, border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.tribute-card:hover { transform: translateY(-6px); border-color: rgba(212,85,138,0.4); }
+
+.tribute-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; left: 50%; transform: translateX(-50%);
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,85,138,0.12), transparent 70%);
+}
+
+.tribute-card .t-emoji { font-size: 2.5rem; display: block; margin-bottom: 0.8rem; animation: float 4s ease-in-out infinite; }
+.tribute-card:nth-child(2) .t-emoji { animation-delay: 0.5s; }
+.tribute-card:nth-child(3) .t-emoji { animation-delay: 1s; }
+
+.tribute-card h3 {
+  font-family: 'Playfair Display', serif;
+  color: #fff;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.tribute-card p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+/* ── BIG HEART ANIMATION ── */
+.heartbeat-wrap {
+  text-align: center;
+  margin: 3rem 0;
+  position: relative;
+}
+
+.big-heart {
+  font-size: 6rem;
+  display: inline-block;
+  animation: heartbeat 1.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(212,85,138,0.5));
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%       { transform: scale(1.15); }
+  28%       { transform: scale(1); }
+  42%       { transform: scale(1.1); }
+  56%       { transform: scale(1); }
+}
+
+/* ── FINAL MESSAGE ── */
+.final-msg {
+  background: linear-gradient(135deg, rgba(212,85,138,0.08), rgba(212,168,90,0.06));
+  border: 1px solid rgba(212,85,138,0.25);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.final-msg p {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+  color: var(--text-light);
+  line-height: 2;
+  margin-bottom: 1rem;
+}
+
+.final-msg p .hi { color: var(--rose-light); font-style: italic; }
+
+.final-sign {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.2rem;
+  color: var(--gold);
+  display: block;
+  margin-top: 1.5rem;
+}
+
+/* ── SHOOTING STARS ── */
+.shoot-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #fff;
+  animation: shoot 4s linear infinite;
+}
+
+@keyframes shoot {
+  0%   { transform: translateX(0) translateY(0); opacity: 1; width: 2px; }
+  100% { transform: translateX(300px) translateY(300px); opacity: 0; width: 100px; }
+}
+
+/* ── END ROW ── */
+.end-row {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+/* Confetti button */
+.confetti-btn {
+  position: relative;
+  overflow: visible;
+}
+</style>
+</head>
+<body>
+<canvas id="petal-canvas"></canvas>
+<canvas id="fireworks-canvas" style="position:fixed;inset:0;z-index:999;display:none;pointer-events:none;"></canvas>
+
+<nav>
+  <a class="nav-logo" href="index.html">G ♡</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="birthday.html">Birthday 🎂</a></li>
+    <li><a href="timeline.html">Our Story</a></li>
+    <li><a href="memories.html">Memories</a></li>
+    <li><a href="forgot.html">Never Forgot</a></li>
+    <li><a href="letter.html">Letter 💌</a></li>
+    <li><a href="songs.html">Our Songs 🎵</a></li>
+    <li><a href="chance.html" class="locked">Another Chance</a></li>
+    <li><a href="finale.html">Finale 🎉</a></li>
+  </ul>
+</nav>
+
+<!-- FINALE HERO -->
+<div class="page-wrap">
+<section id="finale-hero">
+  <!-- Stars -->
+  <div id="starfield"></div>
+
+  <!-- Floating hearts -->
+  <div class="float-hearts">
+    <span class="fh" style="left:10%; top:20%; animation-delay:0s;">🌸</span>
+    <span class="fh" style="left:80%; top:15%; animation-delay:1s;">💕</span>
+    <span class="fh" style="left:20%; top:70%; animation-delay:2s;">✨</span>
+    <span class="fh" style="left:75%; top:65%; animation-delay:0.5s;">🌹</span>
+    <span class="fh" style="left:50%; top:10%; animation-delay:1.5s;">💛</span>
+    <span class="fh" style="left:5%; top:50%; animation-delay:2.5s;">🎊</span>
+    <span class="fh" style="left:90%; top:40%; animation-delay:0.8s;">🌸</span>
+  </div>
+
+  <div class="finale-emoji-row">🎉 🌸 🎂 🌸 🎉</div>
+
+  <h1 class="finale-h1">
+    Happy Birthday<br>
+    <span class="r">Gargi</span> <span class="g">💛</span>
+  </h1>
+
+  <p class="finale-tagline">"Once Again — From Adi, With All His Heart"</p>
+
+  <button class="btn btn-primary confetti-btn" onclick="launchFireworks('fireworks-canvas', 6000)" style="font-size:0.9rem;">
+    🎊 Celebrate!
+  </button>
+</section>
+
+<!-- TRIBUTE SECTION -->
+<div class="section" style="padding-top:4rem;">
+  <span class="section-label reveal" style="font-family:'Dancing Script',cursive; color:var(--gold); font-size:1rem; letter-spacing:2px; display:block; text-align:center; margin-bottom:0.4rem;">Teri special qualities</span>
+  <h2 class="reveal" style="font-family:'Playfair Display',serif; color:#fff; font-size:clamp(1.6rem,4vw,2.2rem); text-align:center; margin-bottom:2.5rem;">What Makes You, <em style="color:var(--rose)">You</em> 🌸</h2>
+
+  <div class="tribute-grid">
+    <div class="tribute-card reveal">
+      <span class="t-emoji">😊</span>
+      <h3>Teri Smile</h3>
+      <p>"Duniya ki best smile award — formally — jaati hai tujhe. No competition."</p>
+    </div>
+    <div class="tribute-card reveal">
+      <span class="t-emoji">🌀</span>
+      <h3>Curly Hair Queen</h3>
+      <p>"Teri curly hair teri crown hai — aur tu woh queen hai jo usse naturally carry karti hai."</p>
+    </div>
+    <div class="tribute-card reveal">
+      <span class="t-emoji">😤</span>
+      <h3>Attitude + Cuteness</h3>
+      <p>"Gusse mein bhi tu cute hai — yeh ek rare gift hai aur tu iski owner hai."</p>
+    </div>
+    <div class="tribute-card reveal">
+      <span class="t-emoji">🗣️</span>
+      <h3>The Way You Talk</h3>
+      <p>"Teri baatein sunna — ek therapy thi. Free of cost, best quality."</p>
+    </div>
+    <div class="tribute-card reveal">
+      <span class="t-emoji">✨</span>
+      <h3>Just Being You</h3>
+      <p>"Tu sirf exist karti hai — aur woh enough hai. More than enough."</p>
+    </div>
+    <div class="tribute-card reveal">
+      <span class="t-emoji">💛</span>
+      <h3>My Favourite Person</h3>
+      <p>"2 saal mein yeh nahi badla. Teri Adi ke liye tu abhi bhi #1 hai."</p>
+    </div>
+  </div>
+
+  <!-- Heartbeat -->
+  <div class="heartbeat-wrap reveal">
+    <span class="big-heart">💕</span>
+  </div>
+
+  <!-- Final message -->
+  <div class="final-msg reveal">
+    <p>
+      Gargi — <span class="hi">tu yahan tak aayi.</span> Poora page. Timeline, yaadein, letter, songs, aur woh secret page bhi. Matlab kuch toh feel kiya tujhe. Aur yahi kaafi hai.
+    </p>
+    <p>
+      Aaj tera birthday hai. <span class="hi">Main chahta hoon ki tu khush rahe.</span> Teri life mein jo bhi ho — main chahta hoon usme khushiyan hon. Chahe main usme hoon ya nahi.
+    </p>
+    <p>
+      Par agar kabhi tujhe lagey ki ek insaan hai jo tujhe genuinely value karta hai — <span class="hi">woh main hoon.</span> Teri Adi. Abhi bhi. Hamesha.
+    </p>
+    <p>
+      <strong style="color:#fff;">Happy Birthday, Gargi. 🎂</strong><br>
+      Khush reh. Muskurati reh. Curly hair mat seedha karna. 😄
+    </p>
+    <span class="final-sign">— Tumhara Adi 💕</span>
+  </div>
+
+  <!-- Final buttons -->
+  <div class="end-row reveal">
+    <button class="btn btn-primary" onclick="launchFireworks('fireworks-canvas',5000)">🎊 One More Celebration!</button>
+    <a href="index.html" class="btn btn-outline">Back to Home 🌸</a>
+  </div>
+
+  <div style="text-align:center; margin-top:3rem; padding-bottom:2rem;" class="reveal">
+    <p style="font-family:'Dancing Script',cursive; color:var(--rose); font-size:1.3rem; margin-bottom:0.4rem;">Made with 💕 by Adi</p>
+    <p style="font-size:0.75rem; color:var(--text-muted); letter-spacing:1.5px; text-transform:uppercase;">Sirf Gargi ke liye — 17th July 2026</p>
+  </div>
+</div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  // Generate starfield
+  const sf = document.getElementById('starfield');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 3 + 1;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      animation-delay:${Math.random()*3}s;
+      animation-duration:${2+Math.random()*3}s;
+    `;
+    sf.appendChild(s);
+  }
+
+  // Auto-launch fireworks after a short delay on load
+  setTimeout(() => launchFireworks('fireworks-canvas', 3000), 800);
+</script>
+</body>
+</html>
