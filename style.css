@@ -259,3 +259,23 @@ nav {
   .nav-links { display: none; }
   nav { justify-content: center; }
 }
+
+/* ── PARALLAX STARFIELD (shared across homepage, chance, finale) ── */
+#parallax-stars {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.p-star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  animation: star-twinkle ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.65; transform: scale(1.4); }
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found 🌸</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.err-wrap {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 2rem;
+}
+.err-num {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(5rem, 20vw, 9rem);
+  color: var(--rose);
+  line-height: 1;
+  opacity: 0.2;
+  margin-bottom: 0;
+}
+.err-emoji { font-size: 4rem; display: block; margin: 0.5rem 0 1.5rem; animation: float 3s ease-in-out infinite; }
+.err-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+.err-msg {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.15rem;
+  color: var(--gold);
+  max-width: 380px;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+</style>
+</head>
+<body>
+<canvas id="petal-canvas"></canvas>
+<div class="err-wrap">
+  <p class="err-num">404</p>
+  <span class="err-emoji">🌸</span>
+  <h1 class="err-title">Yeh page nahi mila...</h1>
+  <p class="err-msg">"Par tu mili thi — aur woh kisi bhi page se zyada khaas tha. 🌸"</p>
+  <a href="index.html" class="btn btn-primary">Ghar wapas chalein →</a>
+</div>
+<script src="shared.js"></script>
+</body>
+</html>

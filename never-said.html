@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="gate.js"></script>
+<title>Things I Never Said 🤍</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.ns-hero {
+  text-align: center;
+  padding: 4rem 1.5rem 2rem;
+}
+
+.ns-intro {
+  max-width: 520px;
+  margin: 1.5rem auto 3rem;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.ns-cards {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.ns-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem 2rem 1.8rem;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.7s ease, transform 0.7s ease, border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.ns-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--rose), var(--gold));
+  border-radius: 3px 0 0 3px;
+}
+
+.ns-card.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ns-card:hover {
+  border-color: rgba(212,85,138,0.35);
+  background: rgba(212,85,138,0.04);
+}
+
+.ns-num {
+  font-size: 0.62rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--rose);
+  display: block;
+  margin-bottom: 0.8rem;
+  opacity: 0.7;
+}
+
+.ns-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: var(--text-light);
+  line-height: 1.75;
+  font-style: italic;
+}
+
+.ns-text em {
+  color: var(--rose-light);
+  font-style: normal;
+}
+
+.ns-emoji {
+  display: block;
+  font-size: 1.4rem;
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.ns-closing {
+  text-align: center;
+  padding: 1rem 1.5rem 3rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.ns-closing p {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.3rem;
+  color: var(--gold);
+  line-height: 1.7;
+  opacity: 0;
+  animation: fadeUp 1s 0.3s forwards;
+}
+</style>
+</head>
+<body>
+
+<canvas id="petal-canvas"></canvas>
+
+<nav>
+  <a class="nav-logo" href="index.html">G ♡</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="birthday.html">Birthday 🎂</a></li>
+    <li><a href="timeline.html">Our Story</a></li>
+    <li><a href="memories.html">Memories</a></li>
+    <li><a href="forgot.html">Never Forgot</a></li>
+    <li><a href="letter.html">Letter 💌</a></li>
+    <li><a href="never-said.html">Never Said 🤍</a></li>
+    <li><a href="first-convo.html">First Hello 💬</a></li>
+    <li><a href="wish.html">Make a Wish 🌾</a></li>
+    <li><a href="quiz.html">Quiz 🎯</a></li>
+    <li><a href="songs.html">Our Songs 🎵</a></li>
+    <li><a href="chance.html" class="locked">Another Chance</a></li>
+    <li><a href="finale.html">Finale 🎉</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="ns-hero page-hero">
+    <p class="eyebrow">Jo bol nahi paya —</p>
+    <h1 class="page-title">Things I <span>Never Said</span> 🤍</h1>
+    <p class="page-subtitle">"Dil mein bahut kuch tha. Alfaaz kabhi nahi aaye. Aaj aa rahe hain."</p>
+    <div class="divider"><span>🌸</span></div>
+    <p class="ns-intro">
+      Yeh woh baatein hain jo maine kabhi nahi boli — kisi darr se, kisi waqt ki kami se,
+      ya sirf isliye ki lagta tha — tu samajh jaayegi bina bole. Par shayad nahi samjhi.
+      Toh aaj seedha bol raha hoon.
+    </p>
+  </div>
+
+  <div class="ns-cards" id="ns-cards">
+
+    <div class="ns-card">
+      <span class="ns-num">01 — Jo dil mein tha</span>
+      <p class="ns-text">
+        Maine kabhi nahi bola — par <em>tu mere liye kitna zyada maayane rakhti thi</em>,
+        woh main alfaaz mein nahi kaeh sakta tha. Teri ek message se din shuru hota tha aur
+        teri ek message se khatam. Tu meri routine nahi thi — <em>tu meri zaroorat thi.</em>
+      </p>
+      <span class="ns-emoji">🤍</span>
+    </div>
+
+    <div class="ns-card">
+      <span class="ns-num">02 — Tera dar</span>
+      <p class="ns-text">
+        <em>Tujhse darta tha main.</em> Seriously. Teri ek naraazgi se dil baith jaata tha.
+        Yeh nahi bola kabhi — kyunki lagta tha mard ko darna nahi chahiye.
+        Par tujhse dar lagta tha — isliye ki <em>teri importance itni zyada thi.</em>
+      </p>
+      <span class="ns-emoji">😅</span>
+    </div>
+
+    <div class="ns-card">
+      <span class="ns-num">03 — Teri hassi</span>
+      <p class="ns-text">
+        Tujhe satane mein <em>mujhe bahut mazaa aata tha.</em>
+        Sirf isliye nahi ki main pagal hoon — balki isliye ki jab tu chidh ke mujhe
+        ghoorta thi — woh moment mujhe sabse zyada pasand tha.
+        <em>Teri chidh bhi pyaari lagti thi.</em>
+      </p>
+      <span class="ns-emoji">😂</span>
+    </div>
+
+    <div class="ns-card">
+      <span class="ns-num">04 — Teri awaaz</span>
+      <p class="ns-text">
+        <em>Tujhse baat karna</em> — ek alag hi cheez thi. Koi bhi topic ho,
+        teri baatein sunna mujhe kabhi boring nahi laga. Main ghanton baat kar sakta tha
+        bina oobi. Tujhse baat karte waqt <em>time ka hosh nahi rehta tha.</em>
+      </p>
+      <span class="ns-emoji">💬</span>
+    </div>
+
+    <div class="ns-card">
+      <span class="ns-num">05 — 2 saal baad bhi</span>
+      <p class="ns-text">
+        Yeh shayad sabse badi baat hai jo kabhi seedha nahi boli —
+        <em>2 saal baad bhi wahi hun main.</em> Wahi feelings, wahi pyaar.
+        Kuch nahi badla. Sirf itna badla ki ab bol raha hoon —
+        <em>kyunki aaj teri birthday hai, aur yeh din tujhe sach sunne ka haq deta hai.</em>
+      </p>
+      <span class="ns-emoji">🌸</span>
+    </div>
+
+  </div>
+
+  <div class="ns-closing reveal">
+    <p>"Kuch baatein dil mein rehti hain — jab tak likhi na jaayein. Aaj likh di. 🌸"</p>
+  </div>
+
+  <div class="page-nav-footer">
+    <p>Aage bhi kuch hai...</p>
+    <a href="first-convo.html" class="btn btn-primary">First Hello 💬 →</a>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  // Staggered scroll-reveal for ns-cards
+  const cards = document.querySelectorAll('.ns-card');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), 120);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  cards.forEach(c => observer.observe(c));
+</script>
+</body>
+</html>

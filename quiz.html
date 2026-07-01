@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="gate.js"></script>
+<title>How Well Do You Know Adi? 🎯</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.quiz-hero { text-align: center; padding: 4rem 1.5rem 2rem; }
+
+.quiz-wrap {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 0 1.2rem 4rem;
+}
+
+/* Progress bar */
+.quiz-progress-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+.quiz-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--rose), var(--gold));
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.quiz-q-num {
+  font-size: 0.68rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.quiz-question {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  color: var(--text-light);
+  margin-bottom: 1.8rem;
+  line-height: 1.55;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-opt {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.9rem 1.2rem;
+  text-align: left;
+  color: var(--text-body);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.quiz-opt:hover:not(:disabled) {
+  border-color: rgba(212,85,138,0.45);
+  background: rgba(212,85,138,0.06);
+  transform: translateX(4px);
+}
+.quiz-opt.correct {
+  border-color: #4caf85;
+  background: rgba(76,175,133,0.1);
+  color: #a8e6cc;
+}
+.quiz-opt.wrong {
+  border-color: rgba(212,85,138,0.5);
+  background: rgba(212,85,138,0.08);
+  color: var(--rose-light);
+}
+.quiz-opt:disabled { cursor: default; transform: none; }
+
+.opt-letter {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.25s;
+}
+.quiz-opt.correct .opt-letter { background: #4caf85; border-color: #4caf85; color: #fff; }
+.quiz-opt.wrong   .opt-letter { background: var(--rose-dark); border-color: var(--rose-dark); color: #fff; }
+
+/* Reaction box */
+.quiz-reaction {
+  min-height: 60px;
+  padding: 0.9rem 1.2rem;
+  border-radius: 14px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  display: none;
+  animation: fadeUp 0.4s forwards;
+}
+.quiz-reaction.show { display: block; }
+.quiz-reaction.correct-r {
+  background: rgba(76,175,133,0.08);
+  border: 1px solid rgba(76,175,133,0.25);
+  color: #a8e6cc;
+}
+.quiz-reaction.wrong-r {
+  background: rgba(212,85,138,0.07);
+  border: 1px solid var(--border);
+  color: var(--rose-light);
+}
+
+.quiz-next-btn {
+  margin-top: 1.2rem;
+  display: none;
+}
+.quiz-next-btn.show { display: block; }
+
+/* Score screen */
+.quiz-score {
+  display: none;
+  text-align: center;
+  padding: 2rem 0 3rem;
+  animation: fadeUp 0.7s forwards;
+}
+.quiz-score.show { display: block; }
+.score-emoji { font-size: 5rem; display: block; margin-bottom: 1rem; }
+.score-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: var(--rose-light);
+}
+.score-label {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 1.5rem;
+}
+.score-msg {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.3rem;
+  color: var(--gold);
+  max-width: 380px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+</style>
+</head>
+<body>
+
+<canvas id="petal-canvas"></canvas>
+
+<nav>
+  <a class="nav-logo" href="index.html">G ♡</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="birthday.html">Birthday 🎂</a></li>
+    <li><a href="timeline.html">Our Story</a></li>
+    <li><a href="memories.html">Memories</a></li>
+    <li><a href="forgot.html">Never Forgot</a></li>
+    <li><a href="letter.html">Letter 💌</a></li>
+    <li><a href="never-said.html">Never Said 🤍</a></li>
+    <li><a href="first-convo.html">First Hello 💬</a></li>
+    <li><a href="wish.html">Make a Wish 🌾</a></li>
+    <li><a href="quiz.html">Quiz 🎯</a></li>
+    <li><a href="songs.html">Our Songs 🎵</a></li>
+    <li><a href="chance.html" class="locked">Another Chance</a></li>
+    <li><a href="finale.html">Finale 🎉</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="quiz-hero page-hero">
+    <p class="eyebrow">Kitna jaanti hai tu mujhe? —</p>
+    <h1 class="page-title">How Well Do You<br><span>Know Adi?</span> 🎯</h1>
+    <p class="page-subtitle">"5 sawaal hain. Sach sach jawab dena. Main dekh raha hoon 😏"</p>
+    <div class="divider"><span>🌸</span></div>
+  </div>
+
+  <div class="quiz-wrap">
+    <div class="quiz-progress-bar">
+      <div class="quiz-progress-fill" id="quiz-progress" style="width:0%"></div>
+    </div>
+
+    <div id="quiz-area">
+      <span class="quiz-q-num" id="q-num">Question 1 of 5</span>
+      <p class="quiz-question" id="q-text"></p>
+      <div class="quiz-options" id="q-options"></div>
+      <div class="quiz-reaction" id="q-reaction"></div>
+      <button class="btn btn-primary quiz-next-btn" id="q-next">Next →</button>
+    </div>
+
+    <div class="quiz-score" id="quiz-score">
+      <span class="score-emoji" id="score-emoji"></span>
+      <span class="score-num" id="score-num"></span>
+      <span class="score-label">out of 5 correct</span>
+      <p class="score-msg" id="score-msg"></p>
+      <a href="songs.html" class="btn btn-primary">Our Songs 🎵 →</a>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  const QUESTIONS = [
+    {
+      q: "Adi ka favourite colour kya hai?",
+      opts: ["Red", "Blue", "Turquoise", "Black"],
+      ans: 2,
+      right: "Haan! 🎉 Turquoise — thoda alag, thoda different, ekdum meri tarah 😄",
+      wrong: "Nahi yaar 😂 Turquoise hai — woh shade jo sea aur sky ke beech hota hai. Unique, just like me 😏"
+    },
+    {
+      q: "Adi ka middle name kya hai?",
+      opts: ["Nikhil", "Nirajan", "Niranjan", "Neeraj"],
+      ans: 2,
+      right: "Waah! Yaad hai tera! 🥹 Niranjan — ab toh pakki dost hai tu",
+      wrong: "Nahi! 😄 Niranjan hai mera middle name. Yaad karlo ab please 😌"
+    },
+    {
+      q: "Adi sabse zyada kis cheez se darta hai?",
+      opts: ["Heights", "Horror movies", "Exams", "Bees"],
+      ans: 1,
+      right: "Haan bilkul sahi! 😱 Horror movies se bahut darta hoon — ek bhi nahi dekh sakta akele",
+      wrong: "Nahi re 😂 Horror movies! Ek scene dekh ke neend kharab ho jaati hai meri — judge mat karna please"
+    },
+    {
+      q: "Adi ki favourite dish kya hai?",
+      opts: ["Butter chicken", "Chicken Biryani", "Pizza", "Pasta"],
+      ans: 1,
+      right: "Perfect! 🍗 Chicken Biryani — iske aage koi competition nahi. Zero.",
+      wrong: "Galat! 😤 Chicken Biryani hai bhai — duniya ki sabse perfect dish. Isko kaise bhool sakti hai tu?"
+    },
+    {
+      q: "Adi ka favourite sport / hobby kya hai?",
+      opts: ["Cricket", "Football", "Badminton", "Chess"],
+      ans: 2,
+      right: "Bilkul sahi! 🏸 Badminton — court pe aao kabhi, dekhte hain kaun jeet ta hai 😏",
+      wrong: "Nahi! 🏸 Badminton hai mera passion — court pe aao ek baar, phir jaano 😄"
+    }
+  ];
+
+  const SCORE_RESULTS = [
+    { emoji: '😅', msg: '"Arey yaar... 0? Matlab itna nahi pehchanti thi mujhe? Koi baat nahi — ab toh pata chal gaya. Ab yaad rakhna. 😌"' },
+    { emoji: '🙈', msg: '"Ek sahi? Thoda jaanti hai, thoda nahi. Par yeh page padhne ke baad toh sab yaad rahega. 😊"' },
+    { emoji: '😊', msg: '"2 sahi! Acha hai — kuch toh yaad tha tera mujhe. Iski practice karni chahiye thi zyada 😄"' },
+    { emoji: '😄', msg: '"3 sahi! Buri nahi hai tu — zyada attention deti thi mujhe, tab yaad raha. Good. 🌸"' },
+    { emoji: '🥹', msg: '"4 sahi! Tune dhyan rakha tha mujhe... yeh sun ke acha laga. Sach mein. 💕"' },
+    { emoji: '🎉', msg: '"Perfect score! 5/5! Tu toh mujhe mujhse better jaanti hai Gargi 😭 Yeh sab remember kiya tune? I am genuinely happy. Thank you. 🌹"' }
+  ];
+
+  let current = 0;
+  let score = 0;
+
+  function loadQuestion() {
+    const q = QUESTIONS[current];
+    const letters = ['A','B','C','D'];
+    document.getElementById('q-num').textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+    document.getElementById('q-text').textContent = q.q;
+    document.getElementById('quiz-progress').style.width = (current / QUESTIONS.length * 100) + '%';
+
+    const optContainer = document.getElementById('q-options');
+    optContainer.innerHTML = '';
+    q.opts.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-opt';
+      btn.innerHTML = `<span class="opt-letter">${letters[i]}</span>${opt}`;
+      btn.onclick = () => selectAnswer(i, btn);
+      optContainer.appendChild(btn);
+    });
+
+    document.getElementById('q-reaction').className = 'quiz-reaction';
+    document.getElementById('q-reaction').textContent = '';
+    document.getElementById('q-next').className = 'btn btn-primary quiz-next-btn';
+  }
+
+  function selectAnswer(idx, clickedBtn) {
+    const q = QUESTIONS[current];
+    const allBtns = document.querySelectorAll('.quiz-opt');
+    allBtns.forEach(b => b.disabled = true);
+
+    const isCorrect = idx === q.ans;
+    if (isCorrect) {
+      clickedBtn.classList.add('correct');
+      score++;
+    } else {
+      clickedBtn.classList.add('wrong');
+      allBtns[q.ans].classList.add('correct');
+    }
+
+    const reaction = document.getElementById('q-reaction');
+    reaction.textContent = isCorrect ? q.right : q.wrong;
+    reaction.className = 'quiz-reaction show ' + (isCorrect ? 'correct-r' : 'wrong-r');
+
+    const nextBtn = document.getElementById('q-next');
+    nextBtn.className = 'btn btn-primary quiz-next-btn show';
+    nextBtn.textContent = current < QUESTIONS.length - 1 ? 'Next →' : 'See my score 🎉';
+  }
+
+  document.getElementById('q-next').onclick = () => {
+    current++;
+    if (current < QUESTIONS.length) {
+      loadQuestion();
+    } else {
+      showScore();
+    }
+  };
+
+  function showScore() {
+    document.getElementById('quiz-progress').style.width = '100%';
+    document.getElementById('quiz-area').style.display = 'none';
+    const scoreEl = document.getElementById('quiz-score');
+    scoreEl.classList.add('show');
+    const result = SCORE_RESULTS[score];
+    document.getElementById('score-emoji').textContent = result.emoji;
+    document.getElementById('score-num').textContent = score + '/5';
+    document.getElementById('score-msg').textContent = result.msg;
+  }
+
+  loadQuestion();
+</script>
+</body>
+</html>

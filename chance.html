@@ -316,6 +316,7 @@
 </head>
 <body>
 <canvas id="petal-canvas"></canvas>
+<div id="parallax-stars"></div>
 <canvas id="fireworks-canvas" style="position:fixed;inset:0;z-index:998;display:none;pointer-events:none;"></canvas>
 <div id="heart-burst"></div>
 
@@ -367,7 +368,7 @@
 
     <p class="code-hint" id="code-hint">
       💡 Hint: <em>"Woh date jo sab shuru hua — sirf din aur mahina"</em><br>
-      <span style="font-size:0.72rem; opacity:0.6;">(DDMM format — like 1705 for 13 April)</span>
+      <span style="font-size:0.72rem; opacity:0.6;">(DDMM format — like 1304 for 13 April)</span>
     </p>
     <p class="error-msg" id="error-msg"></p>
   </div>
@@ -442,8 +443,27 @@
 
 <script src="shared.js"></script>
 <script>
-  // Secret code = 1705 (13th April = start of their relationship)
-  const SECRET = '1705';
+// ── PARALLAX STARFIELD ──
+(function () {
+  const container = document.getElementById('parallax-stars');
+  if (!container) return;
+  const stars = [];
+  for (let i = 0; i < 70; i++) {
+    const star = document.createElement('div');
+    star.className = 'p-star';
+    const size = 1 + Math.random() * 2.5;
+    star.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*3}s;`;
+    container.appendChild(star);
+    stars.push({ el: star, depth: 0.02 + Math.random() * 0.06 });
+  }
+  let mx = 0, my = 0;
+  window.addEventListener('mousemove', e => { mx = (e.clientX/window.innerWidth-0.5)*30; my = (e.clientY/window.innerHeight-0.5)*30; });
+  window.addEventListener('touchmove', e => { const t=e.touches[0]; mx=(t.clientX/window.innerWidth-0.5)*20; my=(t.clientY/window.innerHeight-0.5)*20; }, { passive:true });
+  (function animate() { stars.forEach(s => { s.el.style.transform=`translate(${mx*s.depth*100}px,${my*s.depth*100}px)`; }); requestAnimationFrame(animate); })();
+})();
+<script>
+  // Secret code = 1304 (13th April = start of their relationship)
+  const SECRET = '1304';
   let entered = '';
 
   function updateDots() {

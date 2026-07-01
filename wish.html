@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="gate.js"></script>
+<title>Make a Wish 🌾</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.wish-hero {
+  text-align: center;
+  padding: 4rem 1.5rem 1.5rem;
+}
+
+.dandelion-stage {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  margin: 0 auto 1.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Stem */
+.d-stem {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 120px;
+  background: linear-gradient(to top, #4a7c3f, #7ab560);
+  border-radius: 2px;
+  transform-origin: bottom center;
+  animation: stem-sway 3s ease-in-out infinite;
+}
+@keyframes stem-sway {
+  0%, 100% { transform: translateX(-50%) rotate(-2deg); }
+  50%       { transform: translateX(-50%) rotate(2deg); }
+}
+
+/* Centre ball */
+.d-centre {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -60%);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f5e0b8, #d4a85a);
+  box-shadow: 0 0 16px rgba(212,168,90,0.5);
+  z-index: 2;
+  transition: transform 0.3s;
+}
+
+/* Seeds — positioned around the centre */
+.d-seed {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.d-seed-body {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  transform: translateX(-50%);
+  transition: opacity 0.6s ease;
+}
+.d-seed-line {
+  width: 1.5px;
+  background: rgba(212,168,90,0.7);
+  flex-shrink: 0;
+}
+.d-seed-tip {
+  font-size: 1rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 4px rgba(212,168,90,0.4));
+}
+
+/* Tap hint */
+.tap-hint {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.1rem;
+  color: var(--gold);
+  animation: pulse-hint 2s ease-in-out infinite;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+@keyframes pulse-hint {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Floating wish text */
+.wish-float {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: wish-fly 4s ease-out forwards;
+  font-size: 0.78rem;
+}
+.wish-float .wf-seed { font-size: 1.4rem; }
+.wish-float .wf-text {
+  background: rgba(13,6,16,0.85);
+  border: 1px solid rgba(212,168,90,0.3);
+  border-radius: 12px;
+  padding: 0.4rem 0.8rem;
+  color: var(--gold-light);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.8rem;
+  max-width: 160px;
+  text-align: center;
+  margin-top: 0.3rem;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+@keyframes wish-fly {
+  0%   { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+  10%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); }
+}
+
+/* Wishes remaining counter */
+.wish-counter {
+  font-size: 0.78rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+/* All done state */
+.wish-done {
+  display: none;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  animation: fadeUp 0.8s forwards;
+}
+.wish-done.show { display: block; }
+.wish-done h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: var(--rose-light);
+  margin-bottom: 1rem;
+}
+.wish-done p {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.15rem;
+  color: var(--gold);
+  line-height: 1.8;
+}
+</style>
+</head>
+<body>
+
+<canvas id="petal-canvas"></canvas>
+
+<nav>
+  <a class="nav-logo" href="index.html">G ♡</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="birthday.html">Birthday 🎂</a></li>
+    <li><a href="timeline.html">Our Story</a></li>
+    <li><a href="memories.html">Memories</a></li>
+    <li><a href="forgot.html">Never Forgot</a></li>
+    <li><a href="letter.html">Letter 💌</a></li>
+    <li><a href="never-said.html">Never Said 🤍</a></li>
+    <li><a href="first-convo.html">First Hello 💬</a></li>
+    <li><a href="wish.html">Make a Wish 🌾</a></li>
+    <li><a href="quiz.html">Quiz 🎯</a></li>
+    <li><a href="songs.html">Our Songs 🎵</a></li>
+    <li><a href="chance.html" class="locked">Another Chance</a></li>
+    <li><a href="finale.html">Finale 🎉</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="wish-hero page-hero">
+    <p class="eyebrow">Teri birthday ka wish —</p>
+    <h1 class="page-title">Make a <span>Wish</span> 🌾</h1>
+    <p class="page-subtitle">"Teri zindagi ke liye 5 duaayein hain mere paas. Har baar tap karne par ek udegi. 🌸"</p>
+    <div class="divider"><span>✨</span></div>
+  </div>
+
+  <div style="text-align:center; padding: 0 1rem;">
+    <span class="tap-hint" id="tap-hint">👆 Tap the dandelion to release a wish</span>
+    <p class="wish-counter" id="wish-counter">5 wishes remaining</p>
+
+    <div class="dandelion-stage" id="dandelion" onclick="releaseWish()">
+      <div class="d-stem"></div>
+      <div class="d-centre" id="d-centre"></div>
+      <!-- Seeds generated by JS -->
+      <div id="seeds-container"></div>
+    </div>
+  </div>
+
+  <div class="wish-done" id="wish-done">
+    <h2>Saari duaayein ud gayi 🌾✨</h2>
+    <p>
+      "NEET mein achi rank aaye,<br>
+      sapnon ka college mile,<br>
+      ghar mein chain mile,<br>
+      tu hamesha khush rahe —<br>
+      aur... hum phir mile. 🌸"
+    </p>
+  </div>
+
+  <div class="page-nav-footer" id="wish-nav" style="display:none;">
+    <p>Ek quiz baki hai —</p>
+    <a href="quiz.html" class="btn btn-primary">Quiz 🎯 →</a>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  const WISHES = [
+    'NEET mein achi rank aaye 📚',
+    'Sapnon ka college mile 🏥',
+    'Ghar mein sab theek rahe 🏠',
+    'Tu hamesha khush rahe 😊',
+    'Hum phir mile... 🌹'
+  ];
+
+  const SEED_COUNT = 12;
+  const container = document.getElementById('seeds-container');
+  const dandelion = document.getElementById('dandelion');
+  const centre = document.getElementById('d-centre');
+  const counter = document.getElementById('wish-counter');
+  const tapHint = document.getElementById('tap-hint');
+  const doneBox = document.getElementById('wish-done');
+  const navBox  = document.getElementById('wish-nav');
+
+  let remaining = WISHES.length;
+  const seeds = [];
+
+  // Build seeds radially
+  for (let i = 0; i < SEED_COUNT; i++) {
+    const angle = (i / SEED_COUNT) * 360;
+    const len = 55 + (i % 3) * 10;
+    const seed = document.createElement('div');
+    seed.className = 'd-seed';
+    seed.style.transform = `rotate(${angle}deg)`;
+    seed.innerHTML = `
+      <div class="d-seed-body" style="top:-${len}px;">
+        <div class="d-seed-tip">🌾</div>
+        <div class="d-seed-line" style="height:${len * 0.7}px;"></div>
+      </div>`;
+    container.appendChild(seed);
+    seeds.push({ el: seed, angle });
+  }
+
+  function releaseWish() {
+    if (remaining <= 0) return;
+    const wish = WISHES[WISHES.length - remaining];
+    remaining--;
+
+    // Remove ~(SEED_COUNT / WISHES.length) seeds per tap
+    const perWish = Math.ceil(SEED_COUNT / WISHES.length);
+    const toRemove = seeds.splice(0, perWish);
+    toRemove.forEach(s => {
+      s.el.querySelector('.d-seed-body').style.opacity = '0';
+      setTimeout(() => s.el.remove(), 600);
+    });
+
+    // Animate wish floating away
+    const rect = dandelion.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    const floater = document.createElement('div');
+    floater.className = 'wish-float';
+    const tx = (Math.random() - 0.5) * 300;
+    const ty = -(120 + Math.random() * 160);
+    const rot = (Math.random() - 0.5) * 40;
+    floater.style.setProperty('--tx', tx + 'px');
+    floater.style.setProperty('--ty', ty + 'px');
+    floater.style.setProperty('--rot', rot + 'deg');
+    floater.style.left = cx + 'px';
+    floater.style.top = cy + 'px';
+    floater.innerHTML = `<span class="wf-seed">🌾</span><span class="wf-text">${wish}</span>`;
+    document.body.appendChild(floater);
+    setTimeout(() => floater.remove(), 4200);
+
+    // Shrink centre as seeds reduce
+    const scale = 0.5 + (remaining / WISHES.length) * 0.5;
+    centre.style.transform = `translate(-50%, -60%) scale(${scale})`;
+
+    // Update counter
+    if (remaining > 0) {
+      counter.textContent = remaining + ' wish' + (remaining !== 1 ? 'es' : '') + ' remaining';
+    } else {
+      counter.textContent = 'Saari wishes ud gayi ✨';
+      tapHint.style.display = 'none';
+      dandelion.style.pointerEvents = 'none';
+      setTimeout(() => {
+        doneBox.classList.add('show');
+        navBox.style.display = 'block';
+      }, 1200);
+    }
+  }
+</script>
+</body>
+</html>
