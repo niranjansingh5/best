@@ -80,6 +80,30 @@
   });
 })();
 
+// ── HAMBURGER NAV ──
+function toggleNav() {
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.querySelector('.nav-links');
+  const overlay   = document.getElementById('nav-overlay');
+  if (!hamburger || !navLinks) return;
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+  if (overlay) overlay.classList.toggle('open');
+}
+// Close nav when any link is clicked
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      const hamburger = document.getElementById('hamburger');
+      const navLinks  = document.querySelector('.nav-links');
+      const overlay   = document.getElementById('nav-overlay');
+      if (hamburger) hamburger.classList.remove('open');
+      if (navLinks)  navLinks.classList.remove('open');
+      if (overlay)   overlay.classList.remove('open');
+    });
+  });
+});
+
 // ── BACKGROUND MUSIC (persists across pages via sessionStorage) ──
 // Drop your own mp3 files into the /music folder (see music/README.txt)
 // and list them below — the player will move through them on every page.

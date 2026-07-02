@@ -154,6 +154,60 @@
   z-index: 1;
 }
 
+/* ── REPLY FORM ── */
+.reply-wrap {
+  max-width: 540px;
+  margin: 2.5rem auto 0;
+  padding: 0 0.5rem;
+}
+.reply-card {
+  background: rgba(212,168,90,0.04);
+  border: 1px solid rgba(212,168,90,0.25);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+}
+.reply-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--gold-light);
+  margin-bottom: 0.4rem;
+}
+.reply-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 1.4rem;
+  font-style: italic;
+}
+.reply-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--text-light);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  padding: 1rem;
+  resize: vertical;
+  min-height: 120px;
+  outline: none;
+  transition: border-color 0.25s;
+  margin-bottom: 1rem;
+  display: block;
+}
+.reply-textarea:focus { border-color: rgba(212,168,90,0.5); }
+.reply-textarea::placeholder { color: var(--text-muted); font-style: italic; }
+.reply-send-btn { width: 100%; justify-content: center; }
+.reply-sent-msg { padding: 1rem 0; animation: fadeUp 0.6s forwards; }
+.reply-sent-msg p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--gold-light);
+  line-height: 1.8;
+  margin-top: 0.8rem;
+  font-size: 1rem;
+}
+
 /* Heart burst on unlock */
 #heart-burst {
   position: fixed; inset: 0;
@@ -322,6 +376,8 @@
 
 <nav>
   <a class="nav-logo" href="index.html">G ♡</a>
+  <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-overlay" id="nav-overlay" onclick="toggleNav()"></div>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="birthday.html">Birthday 🎂</a></li>
@@ -353,22 +409,22 @@
     </div>
 
     <div class="numpad">
-      <button class="num-btn" onclick="press(1)">1</button>
-      <button class="num-btn" onclick="press(2)">2</button>
-      <button class="num-btn" onclick="press(3)">3</button>
-      <button class="num-btn" onclick="press(4)">4</button>
-      <button class="num-btn" onclick="press(5)">5</button>
-      <button class="num-btn" onclick="press(6)">6</button>
-      <button class="num-btn" onclick="press(7)">7</button>
-      <button class="num-btn" onclick="press(8)">8</button>
-      <button class="num-btn" onclick="press(9)">9</button>
-      <button class="num-btn zero" onclick="press(0)">0</button>
-      <button class="num-btn del" onclick="del()">⌫</button>
+      <button class="num-btn" data-n="1">1</button>
+      <button class="num-btn" data-n="2">2</button>
+      <button class="num-btn" data-n="3">3</button>
+      <button class="num-btn" data-n="4">4</button>
+      <button class="num-btn" data-n="5">5</button>
+      <button class="num-btn" data-n="6">6</button>
+      <button class="num-btn" data-n="7">7</button>
+      <button class="num-btn" data-n="8">8</button>
+      <button class="num-btn" data-n="9">9</button>
+      <button class="num-btn zero" data-n="0">0</button>
+      <button class="num-btn del" data-n="del">⌫</button>
     </div>
 
     <p class="code-hint" id="code-hint">
-      💡 Hint: <em>"Woh date jo sab shuru hua — sirf din aur mahina"</em><br>
-      <span style="font-size:0.72rem; opacity:0.6;">(DDMM format — like 1304 for 13 April)</span>
+      💡 Hint: <em>"Humari ek khaas date — dono ke janam din milake"</em><br>
+      <span style="font-size:0.72rem; opacity:0.6;">(4 digits — soch ke dekh 😊)</span>
     </p>
     <p class="error-msg" id="error-msg"></p>
   </div>
@@ -427,6 +483,29 @@
         </div>
       </div>
 
+      <!-- ── REPLY FORM ── -->
+      <div class="reply-wrap reveal" id="reply-section">
+        <div class="reply-card">
+          <p class="reply-label">💌 Apna jawab likh — sirf mere liye</p>
+          <p class="reply-sub">Yeh message seedha Adi tak pahunchega. Koi aur nahi padhega.</p>
+          <div id="reply-form-area">
+            <textarea
+              id="reply-text"
+              class="reply-textarea"
+              placeholder="Jo dil mein hai woh likh de yahan... 🌸"
+              rows="5"
+            ></textarea>
+            <button class="btn btn-primary reply-send-btn" onclick="sendReply()">
+              Bhej de Adi ko 💕
+            </button>
+          </div>
+          <div id="reply-sent" class="reply-sent-msg" style="display:none;">
+            <span style="font-size:2.5rem;">💌</span>
+            <p>"Tera message Adi tak pahunch gaya. 🌸<br>Ab woh wait karega tera — hamesha ki tarah."</p>
+          </div>
+        </div>
+      </div>
+
       <div style="text-align:center; margin-top:2.5rem;" class="reveal">
         <a href="finale.html" class="btn btn-primary">Final Message 🎉 →</a>
       </div>
@@ -443,6 +522,39 @@
 
 <script src="shared.js"></script>
 <script>
+  // ── REPLY FUNCTION ──
+  // IMPORTANT: Replace YOUR_FORM_ID below with your own FormSpree form ID.
+  // Steps: go to https://formspree.io → sign up free → New Form → copy the ID
+  // It looks like: xyzabcde — replace just that part in the URL below.
+  async function sendReply() {
+    const text = document.getElementById('reply-text').value.trim();
+    if (!text) {
+      document.getElementById('reply-text').focus();
+      document.getElementById('reply-text').style.borderColor = 'rgba(212,85,138,0.6)';
+      return;
+    }
+    const btn = document.querySelector('.reply-send-btn');
+    btn.textContent = 'Bhej raha hai... 💕';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ message: text, from: 'Gargi 🌸', _subject: 'Gargi ka jawab aaya 💌' })
+      });
+      if (res.ok) {
+        document.getElementById('reply-form-area').style.display = 'none';
+        document.getElementById('reply-sent').style.display = 'block';
+      } else {
+        btn.textContent = 'Kuch galat hua — dobara try kar 🙏';
+        btn.disabled = false;
+      }
+    } catch (e) {
+      btn.textContent = 'Network error — try again 🙏';
+      btn.disabled = false;
+    }
+  }
 // ── PARALLAX STARFIELD ──
 (function () {
   const container = document.getElementById('parallax-stars');
@@ -461,49 +573,58 @@
   window.addEventListener('touchmove', e => { const t=e.touches[0]; mx=(t.clientX/window.innerWidth-0.5)*20; my=(t.clientY/window.innerHeight-0.5)*20; }, { passive:true });
   (function animate() { stars.forEach(s => { s.el.style.transform=`translate(${mx*s.depth*100}px,${my*s.depth*100}px)`; }); requestAnimationFrame(animate); })();
 })();
-<script>
-  // Secret code = 1304 (13th April = start of their relationship)
-  const SECRET = '1304';
-  let entered = '';
 
-  function updateDots() {
-    for (let i = 0; i < 4; i++) {
-      document.getElementById('d' + i).classList.toggle('filled', i < entered.length);
+  // Secret code = 1705 (her birthday + Adi's birthday together)
+  const SECRET = '1705';
+
+  // ── NUMPAD — wrapped in DOMContentLoaded so buttons exist ──
+  document.addEventListener('DOMContentLoaded', function() {
+    let entered = '';
+
+    function updateDots() {
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById('d' + i);
+        if (dot) dot.classList.toggle('filled', i < entered.length);
+      }
     }
-  }
 
-  function press(n) {
-    if (entered.length >= 4) return;
-    entered += n;
-    updateDots();
-    if (entered.length === 4) {
-      setTimeout(checkCode, 200);
-    }
-  }
-
-  function del() {
-    entered = entered.slice(0, -1);
-    updateDots();
-    document.getElementById('error-msg').textContent = '';
-    document.getElementById('code-wrap').classList.remove('error');
-  }
-
-  function checkCode() {
-    if (entered === SECRET) {
-      unlock();
-    } else {
-      document.getElementById('code-wrap').classList.add('error');
-      document.getElementById('error-msg').textContent = '✗ Galat code — try karo phir se 🙈';
-      setTimeout(() => {
-        entered = '';
+    document.querySelectorAll('.num-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const n = this.dataset.n;
+        if (n === 'del') {
+          entered = entered.slice(0, -1);
+          const errEl = document.getElementById('error-msg');
+          if (errEl) errEl.textContent = '';
+          const wrap = document.getElementById('code-wrap');
+          if (wrap) wrap.classList.remove('error');
+        } else if (entered.length < 4) {
+          entered += n;
+        }
         updateDots();
-        document.getElementById('code-wrap').classList.remove('error');
-        document.getElementById('error-msg').textContent = '';
-      }, 1200);
-    }
-  }
+        if (entered.length === 4) {
+          setTimeout(checkCode, 200);
+        }
+      });
+    });
 
-  function unlock() {
+    function checkCode() {
+      if (entered === SECRET) {
+        unlock();
+      } else {
+        const wrap = document.getElementById('code-wrap');
+        const errEl = document.getElementById('error-msg');
+        if (wrap) wrap.classList.add('error');
+        if (errEl) errEl.textContent = '✗ Galat code — try karo phir se 🙈';
+        setTimeout(() => {
+          entered = '';
+          updateDots();
+          if (wrap) wrap.classList.remove('error');
+          if (errEl) errEl.textContent = '';
+        }, 1200);
+      }
+    }
+
+    function unlock() {
     // Heart burst
     const burst = document.getElementById('heart-burst');
     burst.style.display = 'flex';
@@ -536,7 +657,9 @@
       }, { threshold: 0.12 });
       items.forEach(el => io2.observe(el));
     }, 750);
-  }
+  } // end unlock()
+
+  }); // end DOMContentLoaded
 
   function sayYes() {
     document.getElementById('answer-reveal').style.display = 'block';
